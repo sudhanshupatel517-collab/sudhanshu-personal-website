@@ -230,9 +230,6 @@
             <div class="container mx-auto px-4">
                 <h2 class="text-3xl font-bold text-gray-900 text-center mb-8">Get in Touch</h2>
                 <div class="max-w-xl mx-auto">
-                    <p class="text-center text-lg text-gray-600 mb-8">
-                        I'm always open to new opportunities and collaborations. Feel free to send me a message!
-                    </p>
                     <!-- Container for the form and the success message -->
                     <div id="contact-content-container">
                         <!-- Added id="contact-form" for JavaScript functionality -->
@@ -401,9 +398,32 @@
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, updateProfile, RecaptchaVerifier, signInWithPhoneNumber, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, signInWithEmailAndPassword, sendPasswordResetEmail, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, onSnapshot, query, serverTimestamp, doc, runTransaction, arrayUnion, arrayRemove, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Firebase configuration and initialization
-        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+        // ====================================================================
+        // ===  Step 1: PASTE YOUR FIREBASE CONFIGURATION HERE  ===============
+        // ====================================================================
+        // Go to your Firebase project settings, find "Your apps", and copy
+        // the `firebaseConfig` object.
+        // DO NOT remove the `const firebaseConfig = ...` part.
+        // Replace the placeholder object below with your actual configuration.
+        // For example:
+        // const firebaseConfig = {
+        //   apiKey: "YOUR_API_KEY",
+        //   authDomain: "YOUR_AUTH_DOMAIN",
+        //   ...
+        // };
+        // --------------------------------------------------------------------
+        const firebaseConfig = {
+            apiKey: "AIzaSyBoGH8LFQ4U5iyKQiLRt0foVFhNsa8Myos",
+            authDomain: "see-sudhanshu.firebaseapp.com",
+            projectId: "see-sudhanshu",
+            storageBucket: "see-sudhanshu.firebasestorage.app",
+            messagingSenderId: "411257749031",
+            appId: "1:411257749031:web:7ef6fe3eaae446343e5802"
+        };
+        // ====================================================================
+
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
 
         let db, auth;
         let unsubscribeFromComments = null; // Variable to hold the unsubscribe function for the comments listener
@@ -448,18 +468,17 @@
         window.onload = async function() {
             try {
                 // Ensure the Firebase config is not empty before trying to initialize
-                if (Object.keys(firebaseConfig).length === 0) {
+                if (!firebaseConfig.apiKey || firebaseConfig.apiKey.startsWith("YOUR")) {
                      console.error("Firebase configuration is missing.");
-                     showModal("Error", "Firebase configuration is missing. The comment and like system will be disabled.");
+                     showModal("Error", "Firebase configuration is missing. The comment and like system will be disabled. Please update the configuration in the code.");
                      return;
                 }
 
                 const app = initializeApp(firebaseConfig);
                 auth = getAuth(app);
                 db = getFirestore(app);
-
+                
                 // Sign in with custom token or anonymously
-                const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
                 if (initialAuthToken) {
                     await signInWithCustomToken(auth, initialAuthToken);
                 } else {
@@ -526,7 +545,11 @@
         
         // Profile Button Logic
         document.getElementById('profile-btn').addEventListener('click', () => {
-            if (auth && auth.currentUser && !auth.currentUser.isAnonymous) {
+            if (!auth || !db) {
+                 showModal("Error", "The authentication system is not available. Please try again later.");
+                 return;
+            }
+            if (auth.currentUser && !auth.currentUser.isAnonymous) {
                 // If user is logged in, show a confirmation modal for logout
                 showModal('Logout', 'Are you sure you want to log out?');
                 document.getElementById('modal-close').textContent = 'Cancel';
@@ -546,12 +569,9 @@
                     }
                 });
                 document.getElementById('modal').querySelector('.text-right').appendChild(logoutConfirmBtn);
-            } else if (auth) {
+            } else {
                 // If user is not logged in, show the auth modal
                 showAuthModal();
-            } else {
-                // Firebase is not initialized, show an error
-                showModal("Error", "The authentication system is not available. Please try again later.");
             }
         });
         
@@ -605,12 +625,12 @@
             const isPhoneNumber = /^\+\d{10,15}$/.test(identifier.trim());
         
             try {
+                 if (!auth) {
+                     showModal("Error", "Authentication system not initialized.");
+                     return;
+                 }
                 if (isPhoneNumber) {
                     // Sign in with phone number (sends OTP)
-                    if (!auth) {
-                         showModal("Error", "Authentication system not initialized.");
-                         return;
-                    }
                     if (!appVerifierLogin) {
                         appVerifierLogin = new RecaptchaVerifier(auth, 'recaptcha-container-login', { 'size': 'invisible' });
                         await appVerifierLogin.render();
@@ -624,10 +644,6 @@
                      });
                 } else {
                     // Sign in with email and password
-                    if (!auth) {
-                         showModal("Error", "Authentication system not initialized.");
-                         return;
-                    }
                     const userCredential = await signInWithEmailAndPassword(auth, identifier, password);
                     console.log("Login successful:", userCredential.user);
                     showModal('Success', `Welcome back, ${userCredential.user.displayName || userCredential.user.email}!`);
@@ -783,7 +799,7 @@
         const profileLikesCount = document.getElementById('profile-likes-count');
 
         heartBtn.addEventListener('click', () => {
-            if (!auth || !auth.currentUser || auth.currentUser.isAnonymous) {
+            if (!auth || !db || !auth.currentUser || auth.currentUser.isAnonymous) {
                 showAuthModal();
                 return;
             }
@@ -901,7 +917,7 @@
         
         // Function to handle comment likes
         function handleCommentLike(commentId, button) {
-            if (!auth || !auth.currentUser || auth.currentUser.isAnonymous) {
+            if (!auth || !db || !auth.currentUser || auth.currentUser.isAnonymous) {
                 showAuthModal();
                 return;
             }
