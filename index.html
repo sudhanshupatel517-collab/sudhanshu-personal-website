@@ -52,11 +52,28 @@
         }
 
         /* CSS for heart icon state change */
-        #heart-btn .outline-heart {
+        /* The heart button itself has a relative position to correctly position the filled heart */
+        #heart-btn {
+            position: relative;
+        }
+        /* Both hearts start with opacity 0 so they don't flash on load */
+        #heart-btn .outline-heart,
+        #heart-btn .filled-heart {
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        /* Default state: show outline heart, hide filled heart */
+        #heart-btn:not(.liked) .outline-heart {
             opacity: 1;
             transform: scale(1);
-            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
         }
+        #heart-btn:not(.liked) .filled-heart {
+            opacity: 0;
+            transform: scale(0);
+        }
+        /* Liked state: hide outline heart, show filled heart */
         #heart-btn.liked .outline-heart {
             opacity: 0;
             transform: scale(0);
@@ -65,6 +82,8 @@
             opacity: 1;
             transform: scale(1);
         }
+
+        /* Comment heart button styling */
         .heart-btn-comment .outline-heart,
         .heart-btn-comment .filled-heart {
              transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
@@ -135,7 +154,7 @@
                     <!-- Social Interaction Section -->
                     <div class="mt-4 text-center flex justify-center items-center gap-2">
                         <!-- Button for the heart icon -->
-                        <button id="heart-btn" class="relative flex items-center justify-center p-2 rounded-full hover:bg-gray-200 transition-colors duration-300 transform hover:scale-110">
+                        <button id="heart-btn" class="flex items-center justify-center p-2 rounded-full hover:bg-gray-200 transition-colors duration-300 transform hover:scale-110">
                             <!-- SVG for the outline heart icon (default state) -->
                             <svg class="h-8 w-8 text-gray-800 stroke-current outline-heart" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
@@ -428,6 +447,13 @@
         // Initialize Firebase on window load
         window.onload = async function() {
             try {
+                // Ensure the Firebase config is not empty before trying to initialize
+                if (Object.keys(firebaseConfig).length === 0) {
+                     console.error("Firebase configuration is missing.");
+                     showModal("Error", "Firebase configuration is missing. The comment and like system will be disabled.");
+                     return;
+                }
+
                 const app = initializeApp(firebaseConfig);
                 auth = getAuth(app);
                 db = getFirestore(app);
@@ -494,13 +520,13 @@
 
             } catch (error) {
                 console.error("Error initializing Firebase:", error);
-                showModal("Error", "Failed to initialize the comment system.");
+                showModal("Error", "Failed to initialize the comment and like system. Please check the console for details.");
             }
         }
         
         // Profile Button Logic
         document.getElementById('profile-btn').addEventListener('click', () => {
-            if (auth.currentUser && !auth.currentUser.isAnonymous) {
+            if (auth && auth.currentUser && !auth.currentUser.isAnonymous) {
                 // If user is logged in, show a confirmation modal for logout
                 showModal('Logout', 'Are you sure you want to log out?');
                 document.getElementById('modal-close').textContent = 'Cancel';
@@ -512,6 +538,7 @@
                         await signOut(auth);
                         document.getElementById('modal').style.display = 'none';
                         document.getElementById('modal-close').textContent = 'OK'; // Reset button text
+                        location.reload(); // Reload the page to reset the UI cleanly
                     } catch (error) {
                         showModal('Logout Failed', 'Could not log you out. Please try again.');
                     } finally {
@@ -519,9 +546,12 @@
                     }
                 });
                 document.getElementById('modal').querySelector('.text-right').appendChild(logoutConfirmBtn);
-            } else {
+            } else if (auth) {
                 // If user is not logged in, show the auth modal
                 showAuthModal();
+            } else {
+                // Firebase is not initialized, show an error
+                showModal("Error", "The authentication system is not available. Please try again later.");
             }
         });
         
@@ -577,6 +607,10 @@
             try {
                 if (isPhoneNumber) {
                     // Sign in with phone number (sends OTP)
+                    if (!auth) {
+                         showModal("Error", "Authentication system not initialized.");
+                         return;
+                    }
                     if (!appVerifierLogin) {
                         appVerifierLogin = new RecaptchaVerifier(auth, 'recaptcha-container-login', { 'size': 'invisible' });
                         await appVerifierLogin.render();
@@ -590,6 +624,10 @@
                      });
                 } else {
                     // Sign in with email and password
+                    if (!auth) {
+                         showModal("Error", "Authentication system not initialized.");
+                         return;
+                    }
                     const userCredential = await signInWithEmailAndPassword(auth, identifier, password);
                     console.log("Login successful:", userCredential.user);
                     showModal('Success', `Welcome back, ${userCredential.user.displayName || userCredential.user.email}!`);
@@ -618,6 +656,10 @@
             };
 
             try {
+                if (!auth) {
+                     showModal("Error", "Authentication system not initialized.");
+                     return;
+                }
                 window.localStorage.setItem('emailForSignIn', email);
                 await sendSignInLinkToEmail(auth, email, actionCodeSettings);
 
@@ -638,6 +680,10 @@
             const password = document.getElementById('phone-password').value;
 
             try {
+                 if (!auth) {
+                     showModal("Error", "Authentication system not initialized.");
+                     return;
+                 }
                  if (!appVerifierRegister) {
                      appVerifierRegister = new RecaptchaVerifier(auth, 'recaptcha-container-register', { 'size': 'invisible' });
                      await appVerifierRegister.render();
@@ -669,6 +715,10 @@
             const email = document.getElementById('forgot-password-email').value;
 
             try {
+                if (!auth) {
+                     showModal("Error", "Authentication system not initialized.");
+                     return;
+                }
                 await sendPasswordResetEmail(auth, email);
                 console.log("Password reset email sent to", email);
                 showModal('Password Reset Email Sent', `A password reset email has been sent to ${email}. Please check your inbox.`);
@@ -685,6 +735,10 @@
             const otpCode = document.getElementById('otp-input').value;
 
             try {
+                if (!auth) {
+                     showModal("Error", "Authentication system not initialized.");
+                     return;
+                }
                 const userCredential = await confirmationResult.confirm(otpCode);
                 const isLogin = sessionStorage.getItem('isLogin') === 'true';
 
@@ -729,29 +783,38 @@
         const profileLikesCount = document.getElementById('profile-likes-count');
 
         heartBtn.addEventListener('click', () => {
-            if (!auth.currentUser || auth.currentUser.isAnonymous) {
+            if (!auth || !auth.currentUser || auth.currentUser.isAnonymous) {
                 showAuthModal();
                 return;
             }
-            
+
             const userId = auth.currentUser.uid;
             const profileLikesRef = doc(db, `/artifacts/${appId}/public/data/profileLikes/profile`);
 
+            // Optimistically update the UI first
+            const isLiked = heartBtn.classList.contains('liked');
+            if (!isLiked) {
+                heartBtn.classList.add('liked');
+                createFlyingHeart();
+            } else {
+                heartBtn.classList.remove('liked');
+            }
+
+            // Then, perform the database transaction
             runTransaction(db, async (transaction) => {
                 const docSnap = await transaction.get(profileLikesRef);
                 const data = docSnap.data() || { likedBy: [] };
                 
                 const likedBy = data.likedBy || [];
-                const isLiked = likedBy.includes(userId);
+                const alreadyLiked = likedBy.includes(userId);
 
-                if (isLiked) {
+                if (alreadyLiked) {
                     // User has liked, so unlike it
                     transaction.update(profileLikesRef, {
                         likedBy: arrayRemove(userId)
                     });
                 } else {
                     // User has not liked, so like it
-                    createFlyingHeart();
                     transaction.set(profileLikesRef, {
                         likedBy: arrayUnion(userId)
                     }, { merge: true });
@@ -760,6 +823,8 @@
                 console.log("Profile like transaction successful.");
             }).catch(error => {
                 console.error("Profile like transaction failed: ", error);
+                // Revert the UI state on failure
+                heartBtn.classList.toggle('liked');
                 showModal("Error", "Failed to update like count. Please try again.");
             });
         });
@@ -789,15 +854,20 @@
         // Share button functionality
         const shareBtn = document.getElementById('share-btn');
         shareBtn.addEventListener('click', async () => {
+             if (!auth || !auth.currentUser) {
+                showAuthModal();
+                return;
+            }
+
             // Track the share action
-            if (auth.currentUser) {
+            try {
                  await addDoc(collection(db, `/artifacts/${appId}/public/data/shares`), {
                      userId: auth.currentUser.uid,
                      userName: auth.currentUser.displayName,
                      timestamp: serverTimestamp()
                  });
-             } else {
-                 showAuthModal();
+             } catch (error) {
+                 console.error("Error logging share action:", error);
              }
              
             if (navigator.share) {
@@ -822,7 +892,7 @@
         const commentsContainer = document.getElementById('comments-container');
 
         messageBtn.addEventListener('click', () => {
-            if (!auth.currentUser || auth.currentUser.isAnonymous) {
+            if (!auth || !auth.currentUser || auth.currentUser.isAnonymous) {
                 showAuthModal();
                 return;
             }
@@ -831,7 +901,7 @@
         
         // Function to handle comment likes
         function handleCommentLike(commentId, button) {
-            if (!auth.currentUser || auth.currentUser.isAnonymous) {
+            if (!auth || !auth.currentUser || auth.currentUser.isAnonymous) {
                 showAuthModal();
                 return;
             }
@@ -874,7 +944,7 @@
             }
             
             // Check if user is authenticated before setting up the listener
-            if (!auth.currentUser || auth.currentUser.isAnonymous) {
+            if (!auth || !auth.currentUser || auth.currentUser.isAnonymous) {
                 return;
             }
 
@@ -939,7 +1009,10 @@
             }
 
             // Check if user is authenticated before setting up the listener
-            if (!auth.currentUser || auth.currentUser.isAnonymous) {
+            if (!auth || !auth.currentUser || auth.currentUser.isAnonymous) {
+                 // On initial load, explicitly ensure the heart is not liked
+                heartBtn.classList.remove('liked');
+                profileLikesCount.textContent = 0;
                 return;
             }
             
@@ -953,7 +1026,7 @@
                     
                     profileLikesCount.textContent = likeCount;
 
-                    // Update the heart button's state based on the current user
+                    // Check if the current user's ID is in the likedBy array
                     const userId = auth.currentUser.uid;
                     if (likedBy.includes(userId)) {
                         heartBtn.classList.add('liked');
@@ -978,7 +1051,7 @@
             const commentInput = document.getElementById('comment-input');
             const commentText = commentInput.value.trim();
 
-            if (!auth.currentUser || auth.currentUser.isAnonymous) {
+            if (!auth || !auth.currentUser || auth.currentUser.isAnonymous) {
                 showAuthModal();
                 return;
             }
@@ -1020,7 +1093,7 @@
             }
 
             // Check if user is authenticated (even anonymously)
-            if (!auth.currentUser) {
+            if (!auth || !auth.currentUser) {
                  showModal("Authentication Required", "Please refresh the page to enable anonymous sign-in before sending a message.");
                  return;
             }
