@@ -394,34 +394,37 @@
     
     <!-- Firebase SDKs -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, updateProfile, RecaptchaVerifier, signInWithPhoneNumber, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, signInWithEmailAndPassword, sendPasswordResetEmail, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, query, serverTimestamp, doc, runTransaction, arrayUnion, arrayRemove, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics.js";
+  import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-        // ====================================================================
-        // ===  Step 1: PASTE YOUR FIREBASE CONFIGURATION HERE  ===============
-        // ====================================================================
-        // Go to your Firebase project settings, find "Your apps", and copy
-        // the `firebaseConfig` object.
-        // DO NOT remove the `const firebaseConfig = ...` part.
-        // Replace the placeholder object below with your actual configuration.
-        // For example:
-        // const firebaseConfig = {
-        //   apiKey: "YOUR_API_KEY",
-        //   authDomain: "YOUR_AUTH_DOMAIN",
-        //   ...
-        // };
-        // --------------------------------------------------------------------
-        const firebaseConfig = {
-            apiKey: "AIzaSyBoGH8LFQ4U5iyKQiLRt0foVFhNsa8Myos",
-  authDomain: "see-sudhanshu.firebaseapp.com",
-  projectId: "see-sudhanshu",
-  storageBucket: "see-sudhanshu.firebasestorage.app",
-  messagingSenderId: "411257749031",
-  appId: "1:411257749031:web:7ef6fe3eaae446343e5802",
-  measurementId: "G-37BYYZPLZM"
+  const firebaseConfig = {
+    apiKey: "AIzaSyBoGH8LF04U5iyKQiLRt0foVfNsa8Myos",
+    authDomain: "see-sudhanhu.firebaseapp.com",
+    projectId: "see-sudhanhu",
+    storageBucket: "see-sudhanhu.firebasestorage.app",
+    messagingSenderId: "411257749031",
+    appId: "411257749031:web:7ef6fe3eae446343e5802",
+    measurementId: "G-37BYBZPLZM"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+
+  // ✅ Sign in anonymously
+  const auth = getAuth(app);
+  signInAnonymously(auth)
+    .then(() => {
+      console.log("Signed in anonymously");
+    })
+    .catch((error) => {
+      console.error("Firebase Auth Error:", error);
+    });
+</script>
+
+  
             
-        };
+       
         // ====================================================================
 
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
