@@ -65,6 +65,19 @@
             opacity: 1;
             transform: scale(1);
         }
+        .heart-btn-comment .outline-heart,
+        .heart-btn-comment .filled-heart {
+             transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+        }
+        .heart-btn-comment .filled-heart {
+            opacity: 0;
+        }
+        .heart-btn-comment.liked .outline-heart {
+            opacity: 0;
+        }
+        .heart-btn-comment.liked .filled-heart {
+            opacity: 1;
+        }
 
         /* Styling for the relocated comments section */
         #comments-container {
@@ -91,132 +104,150 @@
     <header class="bg-white shadow-md sticky top-0 z-50">
         <nav class="container mx-auto p-4 flex justify-between items-center">
             <a href="#" class="text-2xl font-bold text-indigo-600">SUDHANSHU</a>
-            <div class="space-x-4">
+            <div class="space-x-4 flex items-center">
                 <a href="#about" class="text-gray-600 hover:text-indigo-600 transition-colors duration-300">About</a>
                 <a href="#projects" class="text-gray-600 hover:text-indigo-600 transition-colors duration-300">Projects</a>
                 <a href="#contact" class="text-gray-600 hover:text-indigo-600 transition-colors duration-300">Contact</a>
+                <!-- New Profile/Logout Button -->
+                <button id="profile-btn" class="bg-indigo-600 text-white font-semibold py-2 px-4 rounded-full shadow-lg hover:bg-indigo-700 transition-colors duration-300 transform hover:scale-105">Profile</button>
             </div>
         </nav>
     </header>
 
-    <!-- Hero Section -->
-    <section id="hero" class="bg-indigo-600 text-white py-20 md:py-32">
-        <div class="container mx-auto text-center px-4">
-            <h1 class="text-4xl md:text-6xl font-extrabold mb-4 animate-fade-in-down">Hello, I'm Sudhanshu</h1>
-            <p class="text-xl md:text-2xl font-light mb-8 animate-fade-in-up">An adventurous traveler and passionate storyteller.</p>
-            <a href="#contact" class="bg-white text-indigo-600 font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-gray-100 transition-all duration-300 transform hover:scale-105">Get in Touch</a>
-        </div>
-    </section>
+    <!-- Main Content -->
+    <main id="main-content">
+        <!-- Hero Section -->
+        <section id="hero" class="bg-indigo-600 text-white py-20 md:py-32">
+            <div class="container mx-auto text-center px-4">
+                <h1 class="text-4xl md:text-6xl font-extrabold mb-4 animate-fade-in-down">Hello, I'm Sudhanshu</h1>
+                <p class="text-xl md:text-2xl font-light mb-8 animate-fade-in-up">An adventurous traveler and passionate storyteller.</p>
+                <a href="#contact" class="bg-white text-indigo-600 font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-gray-100 transition-all duration-300 transform hover:scale-105">Get in Touch</a>
+            </div>
+        </section>
 
-    <!-- About Me Section -->
-    <section id="about" class="py-16 md:py-24 bg-white">
-        <div class="container mx-auto px-4 flex flex-col md:flex-row items-center gap-8">
-            <div class="md:w-1/4">
-                <!-- Image source updated with the correct public GitHub URL, and size adjusted to be smaller -->
-                <img id="profile-pic" src="https://github.com/sudhanshupatel517-collab/sudhanshu-personal-website/blob/main/IMG_20250226_073021.jpg?raw=true" alt="Sudhanshu's Photo" class="w-full max-w-xs h-auto rounded-xl shadow-lg transform hover:scale-105 transition-transform duration-300 animate-bubble">
-                
-                <!-- Social Interaction Section -->
-                <div class="mt-4 text-center flex justify-center gap-4">
-                    <!-- Button for the heart icon -->
-                    <button id="heart-btn" class="relative flex items-center justify-center p-2 rounded-full hover:bg-gray-200 transition-colors duration-300 transform hover:scale-110">
-                        <!-- SVG for the outline heart icon (default state) -->
-                        <svg class="h-8 w-8 text-gray-800 stroke-current outline-heart" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                        </svg>
-                        <!-- SVG for the filled heart icon (liked state) -->
-                        <svg class="h-8 w-8 text-pink-500 fill-current filled-heart" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor" stroke-width="0" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                        </svg>
-                    </button>
-                    <!-- Button for the share icon -->
-                    <button id="share-btn" class="flex items-center justify-center p-2 rounded-full hover:bg-gray-200 transition-colors duration-300 transform hover:scale-110">
-                        <!-- SVG for a bent arrow pointing right with a black outline and no fill -->
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-800 stroke-current hover:text-gray-700 transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 9L17 12.5M17 12.5L13.5 16M17 12.5H6c-3 0-3 3-3 3s0-3 3-3h11z" />
-                        </svg>
-                    </button>
-                    <!-- New button for the message icon -->
-                    <button id="message-btn" class="flex items-center justify-center p-2 rounded-full hover:bg-gray-200 transition-colors duration-300 transform hover:scale-110">
-                        <!-- SVG for a message icon with a black outline and no fill -->
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-800 stroke-current hover:text-gray-700 transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-4l-3 3v-3z" />
-                        </svg>
-                    </button>
+        <!-- About Me Section -->
+        <section id="about" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-4 flex flex-col md:flex-row items-center gap-8">
+                <div class="md:w-1/4">
+                    <!-- Image source updated with the correct public GitHub URL, and size adjusted to be smaller -->
+                    <img id="profile-pic" src="https://github.com/sudhanshupatel517-collab/sudhanshu-personal-website/blob/main/IMG_20250226_073021.jpg?raw=true" alt="Sudhanshu's Photo" class="w-full max-w-xs h-auto rounded-xl shadow-lg transform hover:scale-105 transition-transform duration-300 animate-bubble">
+                    
+                    <!-- Social Interaction Section -->
+                    <div class="mt-4 text-center flex justify-center items-center gap-2">
+                        <!-- Button for the heart icon -->
+                        <button id="heart-btn" class="relative flex items-center justify-center p-2 rounded-full hover:bg-gray-200 transition-colors duration-300 transform hover:scale-110">
+                            <!-- SVG for the outline heart icon (default state) -->
+                            <svg class="h-8 w-8 text-gray-800 stroke-current outline-heart" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            </svg>
+                            <!-- SVG for the filled heart icon (liked state) -->
+                            <svg class="h-8 w-8 text-pink-500 fill-current filled-heart absolute" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor" stroke-width="0" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            </svg>
+                        </button>
+                        <span id="profile-likes-count" class="text-lg font-semibold text-gray-700">0</span>
+                        <!-- Button for the share icon -->
+                        <button id="share-btn" class="flex items-center justify-center p-2 rounded-full hover:bg-gray-200 transition-colors duration-300 transform hover:scale-110">
+                            <!-- SVG for a bent arrow pointing right with a black outline and no fill -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-800 stroke-current hover:text-gray-700 transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 9L17 12.5M17 12.5L13.5 16M17 12.5H6c-3 0-3 3-3 3s0-3 3-3h11z" />
+                            </svg>
+                        </button>
+                        <!-- New button for the message icon -->
+                        <button id="message-btn" class="flex items-center justify-center p-2 rounded-full hover:bg-gray-200 transition-colors duration-300 transform hover:scale-110">
+                            <!-- SVG for a message icon with a black outline and no fill -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-800 stroke-current hover:text-gray-700 transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-4l-3 3v-3z" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Comments section, now placed here -->
+                    <div id="comments-container" class="mt-8 mx-auto w-full">
+                        <h3 class="text-xl font-bold text-gray-900 mb-4">Comments</h3>
+                        <div class="bg-white p-4 rounded-xl shadow-md mb-4">
+                            <form id="comment-form">
+                                <textarea id="comment-input" class="w-full p-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors duration-200" placeholder="Write a comment..." rows="2"></textarea>
+                                <div class="mt-2 text-right">
+                                    <button type="submit" class="bg-indigo-600 text-white text-sm font-semibold py-1 px-4 rounded-full shadow hover:bg-indigo-700 transition-colors duration-300">Post</button>
+                                </div>
+                            </form>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-2">Logged in as: <span id="user-name" class="font-mono text-xs font-semibold">Not logged in</span></p>
+                        <div id="comments-list" class="space-y-3">
+                            <!-- Comments will be dynamically added here -->
+                        </div>
+                    </div>
                 </div>
+                <div class="md:w-3/4">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">It's me</h2>
+                    <p class="text-lg text-gray-700 leading-relaxed mb-4">
+                        Welcome to my corner of the internet! I'm a passionate creator and a curious traveler. I love exploring new places and sharing my experiences. You can follow my adventures on my YouTube channel, <a href="https://youtube.com/shorts/TsQi8imO744?si=QxERlVNelaMawQOa" target="_blank" class="text-indigo-600 hover:underline font-semibold">Ghumakkad Sudhanshu</a>.
+                    </p>
+                    <p class="text-lg text-gray-700 leading-relaxed">
+                        My background is in B.Tech in AIML from a college named MITs in Gwalior. It's my pleasure to serve you some content what you actually deserve. Hope you will support me on my journey from downfall to success. THANKS, your SUDHANSHU.
+                    </p>
+                </div>
+            </div>
+        </section>
 
-                <!-- Comments section, now placed here -->
-                <div id="comments-container" class="mt-8 mx-auto w-full">
-                    <h3 class="text-xl font-bold text-gray-900 mb-4">Comments</h3>
-                    <div class="bg-white p-4 rounded-xl shadow-md mb-4">
-                        <form id="comment-form">
-                            <textarea id="comment-input" class="w-full p-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors duration-200" placeholder="Write a comment..." rows="2"></textarea>
-                            <div class="mt-2 text-right">
-                                <button type="submit" class="bg-indigo-600 text-white text-sm font-semibold py-1 px-4 rounded-full shadow hover:bg-indigo-700 transition-colors duration-300">Post</button>
+        <!-- Projects Section -->
+        <section id="projects" class="py-16 md:py-24 bg-gray-100">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">My Projects</h2>
+                <div class="grid grid-cols-1 gap-8">
+                    <!-- Project Card 1 -->
+                    <div class="bg-white rounded-xl shadow-lg p-6 transform hover:scale-105 transition-transform duration-300">
+                        <img src="https://placehold.co/1200x600/90a4ae/ffffff?text=Rakshabandhan+Family+Picture" alt="Rakshabandhan Project Image" class="rounded-lg mb-4">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">RAKSHABANDHAN SPECIAL</h3>
+                        <p class="text-gray-600">A special project dedicated to my family on the occasion of Rakshabandhan. This section will soon feature a family picture and a heartfelt message.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold text-gray-900 text-center mb-8">Get in Touch</h2>
+                <div class="max-w-xl mx-auto">
+                    <p class="text-center text-lg text-gray-600 mb-8">
+                        I'm always open to new opportunities and collaborations. Feel free to send me a message!
+                    </p>
+                    <!-- Container for the form and the success message -->
+                    <div id="contact-content-container">
+                        <!-- Added id="contact-form" for JavaScript functionality -->
+                        <form id="contact-form" class="bg-gray-50 p-8 rounded-xl shadow-md">
+                            <div class="mb-4">
+                                <label for="name" class="block text-gray-700 font-medium mb-2">Name</label>
+                                <!-- Added id="contact-name" to easily select this input -->
+                                <input type="text" id="contact-name" name="name" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors duration-200" placeholder="Your Name">
+                            </div>
+                            <div class="mb-4">
+                                <label for="email" class="block text-gray-700 font-medium mb-2">Email</label>
+                                <!-- Added id="contact-email" to easily select this input -->
+                                <input type="email" id="contact-email" name="email" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors duration-200" placeholder="your.email@example.com">
+                            </div>
+                            <div class="mb-6">
+                                <label for="message" class="block text-gray-700 font-medium mb-2">Message</label>
+                                <!-- Added id="contact-message" to easily select this input -->
+                                <textarea id="contact-message" name="message" rows="4" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors duration-200" placeholder="Your message..."></textarea>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="w-full md:w-auto bg-indigo-600 text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-indigo-700 transition-colors duration-300 transform hover:scale-105">Send Message</button>
                             </div>
                         </form>
-                    </div>
-                    <p class="text-sm text-gray-600 mb-2">Logged in as: <span id="user-name" class="font-mono text-xs font-semibold">Not logged in</span></p>
-                    <div id="comments-list" class="space-y-3">
-                        <!-- Comments will be dynamically added here -->
+                        <!-- New success message div -->
+                        <div id="contact-success-message" class="hidden bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-xl relative text-center">
+                            <h3 class="font-bold text-xl mb-2">Message Sent!</h3>
+                            <p class="text-lg">Thank you for getting in touch. I will respond to your message as soon as possible.</p>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="md:w-3/4">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">It's me</h2>
-                <p class="text-lg text-gray-700 leading-relaxed mb-4">
-                    Welcome to my corner of the internet! I'm a passionate creator and a curious traveler. I love exploring new places and sharing my experiences. You can follow my adventures on my YouTube channel, <a href="https://youtube.com/shorts/TsQi8imO744?si=QxERlVNELaMawQOa" target="_blank" class="text-indigo-600 hover:underline font-semibold">Ghumakkad Sudhanshu</a>.
-                </p>
-                <p class="text-lg text-gray-700 leading-relaxed">
-                    My background is in B.Tech in AIML from a college named MITs in Gwalior. It's my pleasure to serve you some content what you actually deserve. Hope you will support me on my journey from downfall to success. THANKS, your SUDHANSHU.
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Projects Section -->
-    <section id="projects" class="py-16 md:py-24 bg-gray-100">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">My Projects</h2>
-            <div class="grid grid-cols-1 gap-8">
-                <!-- Project Card 1 -->
-                <div class="bg-white rounded-xl shadow-lg p-6 transform hover:scale-105 transition-transform duration-300">
-                    <img src="https://placehold.co/1200x600/90a4ae/ffffff?text=Rakshabandhan+Family+Picture" alt="Rakshabandhan Project Image" class="rounded-lg mb-4">
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">RAKSHABANDHAN SPECIAL</h3>
-                    <p class="text-gray-600">A special project dedicated to my family on the occasion of Rakshabandhan. This section will soon feature a family picture and a heartfelt message.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="py-16 md:py-24 bg-white">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-gray-900 text-center mb-8">Get in Touch</h2>
-            <div class="max-w-xl mx-auto">
-                <p class="text-center text-lg text-gray-600 mb-8">
-                    I'm always open to new opportunities and collaborations. Feel free to send me a message!
-                </p>
-                <form class="bg-gray-50 p-8 rounded-xl shadow-md">
-                    <div class="mb-4">
-                        <label for="name" class="block text-gray-700 font-medium mb-2">Name</label>
-                        <input type="text" id="name" name="name" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors duration-200" placeholder="Your Name">
-                    </div>
-                    <div class="mb-4">
-                        <label for="email" class="block text-gray-700 font-medium mb-2">Email</label>
-                        <input type="email" id="email" name="email" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors duration-200" placeholder="your.email@example.com">
-                    </div>
-                    <div class="mb-6">
-                        <label for="message" class="block text-gray-700 font-medium mb-2">Message</label>
-                        <textarea id="message" name="message" rows="4" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors duration-200" placeholder="Your message..."></textarea>
-                    </div>
-                    <div class="text-center">
-                        <button type="submit" class="w-full md:w-auto bg-indigo-600 text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-indigo-700 transition-colors duration-300 transform hover:scale-105">Send Message</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </section>
-
+        </section>
+    </main>
+    
     <!-- Footer -->
     <footer class="bg-gray-800 text-white py-8">
         <div class="container mx-auto text-center px-4">
@@ -237,98 +268,109 @@
 
     <!-- Login/Register Modal -->
     <div id="auth-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden flex items-center justify-center z-50">
-        <div class="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full mx-4">
-            
-            <!-- Auth Content Container - This will hold all the different forms -->
+        <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-sm">
+
+            <!-- Unified container for all forms -->
             <div id="auth-content-container">
-
-                <!-- Login Options - Main entry point -->
-                <div id="auth-options" class="auth-form-content active">
-                    <h3 class="text-2xl font-bold mb-4 text-center">Join to Interact</h3>
-                    <p class="text-gray-700 text-center mb-6">Please sign in to like and comment.</p>
-                    <button id="google-login-btn" class="w-full flex items-center justify-center gap-3 bg-blue-500 text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-blue-600 transition-colors duration-300 mb-4">
-                        <img src="https://github.com/sudhanshupatel517-collab/sudhanshu-personal-website/blob/main/download.webp?raw=true" alt="Custom login icon" class="h-6 w-6">
-                        Login with Google
-                    </button>
-                    <button id="show-phone-login-btn" class="w-full flex items-center justify-center gap-3 bg-gray-800 text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-gray-900 transition-colors duration-300 mb-4">
-                        Login with Phone
-                    </button>
-                    <button id="show-register-options-btn" class="w-full text-indigo-600 font-semibold py-3 px-8 rounded-full shadow-md bg-white hover:bg-gray-100 transition-colors duration-300">
-                        Create an Account
-                    </button>
-                </div>
-
-                <!-- Registration Options - New page for choosing registration method -->
-                <div id="register-options" class="auth-form-content">
-                    <h3 class="text-2xl font-bold mb-4 text-center">Create an Account</h3>
-                    <p class="text-gray-700 text-center mb-6">Choose how you'd like to register.</p>
-                    <button id="show-email-register-btn" class="w-full flex items-center justify-center gap-3 bg-indigo-600 text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-indigo-700 transition-colors duration-300 mb-4">
-                        Register with Email
-                    </button>
-                    <button id="show-phone-register-btn" class="w-full flex items-center justify-center gap-3 bg-green-600 text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-green-700 transition-colors duration-300 mb-4">
-                        Register with Phone
-                    </button>
-                    <button type="button" id="back-to-auth-options-btn-1" class="w-full mt-4 text-indigo-600 font-semibold py-3 px-8">Back to Login</button>
-                </div>
-
-                <!-- Email Registration Form (Existing) -->
-                <form id="register-form" class="auth-form-content">
-                    <h3 class="text-2xl font-bold mb-4 text-center">Register with Email</h3>
-                    <p class="text-gray-700 text-center mb-6">Enter your details to get started.</p>
+                
+                <!-- Login Form (now the default view) -->
+                <form id="login-form" class="auth-form-content active">
+                    <h3 class="text-2xl font-bold mb-4 text-center text-gray-800">Login to Your Account</h3>
+                    <p class="text-gray-600 text-center mb-6">Enter your details to log in to your account.</p>
                     <div class="mb-4">
-                        <label for="register-name" class="block text-gray-700 font-medium mb-2">Name</label>
-                        <input type="text" id="register-name" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors duration-200" placeholder="e.g., Jane Doe" required>
-                    </div>
-                    <div class="mb-4">
-                        <label for="register-email" class="block text-gray-700 font-medium mb-2">Email</label>
-                        <input type="email" id="register-email" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors duration-200" placeholder="your.email@example.com" required>
+                        <label for="login-email-phone" class="block text-sm font-medium text-gray-700 mb-1">Email or Phone Number</label>
+                        <input type="text" id="login-email-phone" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="your.email@example.com or +1234567890" required>
                     </div>
                     <div class="mb-6">
-                        <label for="register-password" class="block text-gray-700 font-medium mb-2">Password</label>
-                        <input type="password" id="register-password" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors duration-200" placeholder="at least 6 characters" required>
+                        <label for="login-password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                        <input type="password" id="login-password" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Password" required>
                     </div>
-                    <button type="submit" id="register-submit-btn" class="w-full bg-indigo-600 text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-indigo-700 transition-colors duration-300">Register</button>
-                    <button type="button" id="back-to-register-options-btn-1" class="w-full mt-4 text-indigo-600 font-semibold py-3 px-8">Back</button>
+                    <div class="flex justify-between items-center mb-6">
+                        <label class="flex items-center text-sm text-gray-600">
+                            <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600" id="remember-me">
+                            <span class="ml-2">Remember me</span>
+                        </label>
+                        <button type="button" id="show-forgot-password-form" class="text-sm font-semibold text-blue-600 hover:text-blue-800">Forgot password?</button>
+                    </div>
+                    <button type="submit" class="w-full bg-blue-600 text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-blue-700 transition-colors duration-300">Login</button>
+                    <div id="recaptcha-container-login" class="mt-4 mb-6 hidden"></div>
+                    <div class="mt-6 text-center">
+                        <p class="text-sm text-gray-600">New user? <button type="button" id="show-registration-options" class="text-blue-600 font-semibold hover:text-blue-800">Create an account</button></p>
+                    </div>
                 </form>
 
-                <!-- Phone Login Form -->
-                <form id="phone-login-form" class="auth-form-content">
-                    <h3 class="text-2xl font-bold mb-4 text-center">Login with Phone</h3>
-                    <div class="mb-4">
-                        <label for="phone-login-input" class="block text-gray-700 font-medium mb-2">Phone Number</label>
-                        <input type="tel" id="phone-login-input" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors duration-200" placeholder="+91 98765 43210" required>
+                <!-- Registration Options View -->
+                <div id="options-view" class="auth-form-content text-center">
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800">Create an Account</h3>
+                    <p class="text-gray-600 mb-6">Choose how you would like to register:</p>
+                    <div class="space-y-4">
+                        <button id="show-email-form" class="w-full bg-indigo-600 text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-indigo-700 transition-colors duration-300 transform hover:scale-105">
+                            Register with Email
+                        </button>
+                        <button id="show-phone-form" class="w-full bg-green-600 text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-green-700 transition-colors duration-300 transform hover:scale-105">
+                            Register with Phone
+                        </button>
                     </div>
-                    <div id="recaptcha-container-login" class="mt-4 mb-6"></div>
-                    <button type="submit" id="send-otp-login-btn" class="w-full bg-indigo-600 text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-indigo-700 transition-colors duration-300">Send OTP</button>
-                    <button type="button" id="back-to-auth-options-btn-2" class="w-full mt-4 text-indigo-600 font-semibold py-3 px-8">Back to Login</button>
+                    <button type="button" id="back-to-login-btn-1" class="w-full mt-4 text-gray-600 font-semibold py-3 px-8">Back</button>
+                </div>
+
+                <!-- Email Registration Form -->
+                <form id="email-form" class="auth-form-content">
+                    <h3 class="text-2xl font-bold mb-4 text-center text-gray-800">Register with Email</h3>
+                    <div class="mb-4">
+                        <label for="email-name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                        <input type="text" id="email-name" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="e.g., Jane Doe" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="email-input" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <input type="email" id="email-input" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="your.email@example.com" required>
+                    </div>
+                    <button type="submit" class="w-full bg-indigo-600 text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-indigo-700 transition-colors duration-300">Send Link to My Email</button>
+                    <button type="button" id="back-to-options-btn-1" class="w-full mt-4 text-gray-600 font-semibold py-3 px-8">Back</button>
                 </form>
 
-                <!-- Phone Registration Form (New) -->
-                <form id="phone-register-form" class="auth-form-content">
-                    <h3 class="text-2xl font-bold mb-4 text-center">Register with Phone</h3>
-                    <p class="text-gray-700 text-center mb-6">Enter your name and phone number.</p>
+                <!-- Phone Registration Form -->
+                <form id="phone-form" class="auth-form-content">
+                    <h3 class="text-2xl font-bold mb-4 text-center text-gray-800">Register with Phone</h3>
                     <div class="mb-4">
-                        <label for="phone-register-name" class="block text-gray-700 font-medium mb-2">Name</label>
-                        <input type="text" id="phone-register-name" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors duration-200" placeholder="e.g., Jane Doe" required>
+                        <label for="phone-name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                        <input type="text" id="phone-name" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="e.g., Jane Doe" required>
                     </div>
                     <div class="mb-4">
-                        <label for="phone-register-input" class="block text-gray-700 font-medium mb-2">Phone Number</label>
-                        <input type="tel" id="phone-register-input" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors duration-200" placeholder="+91 98765 43210" required>
+                        <label for="phone-input" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                        <input type="tel" id="phone-input" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="+1234567890" required>
                     </div>
-                    <div id="recaptcha-container-register" class="mt-4 mb-6"></div>
-                    <button type="submit" id="send-otp-register-btn" class="w-full bg-green-600 text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-green-700 transition-colors duration-300">Send OTP</button>
-                    <button type="button" id="back-to-register-options-btn-2" class="w-full mt-4 text-indigo-600 font-semibold py-3 px-8">Back</button>
+                    <div class="mb-6">
+                        <label for="phone-password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                        <input type="password" id="phone-password" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="at least 6 characters" required>
+                    </div>
+                    <div id="recaptcha-container-register" class="mt-4 mb-6 hidden"></div>
+                    <button type="submit" class="w-full bg-green-600 text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-green-700 transition-colors duration-300">Send OTP</button>
+                    <button type="button" id="back-to-options-btn-2" class="w-full mt-4 text-gray-600 font-semibold py-3 px-8">Back</button>
                 </form>
 
-                <!-- OTP Verification Form (Used for both login and register) -->
+                <!-- Forgot Password Form -->
+                <form id="forgot-password-form" class="auth-form-content">
+                    <h3 class="text-2xl font-bold mb-4 text-center text-gray-800">Reset Password</h3>
+                    <p class="text-gray-600 text-center mb-6">Enter your email and we will send you a password reset link.</p>
+                    <div class="mb-4">
+                        <label for="forgot-password-email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <input type="email" id="forgot-password-email" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" placeholder="your.email@example.com" required>
+                    </div>
+                    <button type="submit" class="w-full bg-red-600 text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-red-700 transition-colors duration-300">Send Reset Link</button>
+                    <button type="button" id="back-to-login-btn-2" class="w-full mt-4 text-gray-600 font-semibold py-3 px-8">Back</button>
+                </form>
+
+                <!-- OTP Verification Form (for phone registration and login) -->
                 <form id="otp-form" class="auth-form-content">
-                    <h3 class="text-2xl font-bold mb-4 text-center">Verify Phone</h3>
-                    <p class="text-center text-sm text-gray-600 mb-4">Enter the 6-digit code sent to your phone number.</p>
+                    <h3 class="text-2xl font-bold mb-4 text-center text-gray-800">Verify Phone Number</h3>
+                    <p class="text-center text-sm text-gray-600 mb-4">Enter the 6-digit code sent to your phone.</p>
                     <div class="mb-4">
-                        <label for="otp-input" class="block text-gray-700 font-medium mb-2">Verification Code</label>
-                        <input type="text" id="otp-input" class="w-full p-3 border border-gray-300 rounded-lg text-center text-xl tracking-widest focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors duration-200" maxlength="6" required>
+                        <label for="otp-input" class="block text-sm font-medium text-gray-700 mb-1">Verification Code</label>
+                        <input type="text" id="otp-input" class="w-full p-3 border border-gray-300 rounded-lg text-center text-xl tracking-widest focus:outline-none focus:ring-2 focus:ring-green-500" maxlength="6" required>
                     </div>
-                    <button type="submit" id="verify-otp-btn" class="w-full bg-green-600 text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-green-700 transition-colors duration-300">Verify OTP</button>
+                    <button type="submit" class="w-full bg-green-600 text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-green-700 transition-colors duration-300">Verify OTP</button>
+                    <button type="button" id="back-from-otp-btn" class="w-full mt-4 text-gray-600 font-semibold py-3 px-8">Back</button>
                 </form>
             </div>
         </div>
@@ -337,20 +379,20 @@
     <!-- Firebase SDKs -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, updateProfile, GoogleAuthProvider, signInWithPopup, RecaptchaVerifier, signInWithPhoneNumber, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, query, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, updateProfile, RecaptchaVerifier, signInWithPhoneNumber, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, signInWithEmailAndPassword, sendPasswordResetEmail, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, serverTimestamp, doc, runTransaction, arrayUnion, arrayRemove, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // Firebase configuration and initialization
         const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
 
         let db, auth;
-        let isAuthReady = false;
+        let unsubscribeFromComments = null; // Variable to hold the unsubscribe function for the comments listener
+        let unsubscribeFromLikes = null;
         let confirmationResult;
-        let appVerifierLogin;
         let appVerifierRegister;
-        let isPhoneRegisterFlow = false; // Flag to differentiate between login and register flow
-
+        let appVerifierLogin;
+        
         // Custom modal functions
         function showModal(title, message) {
             const modal = document.getElementById('modal');
@@ -366,8 +408,8 @@
         // Auth modal functions
         function showAuthModal() {
             document.getElementById('auth-modal').style.display = 'flex';
-            // Show the initial login options by default
-            switchAuthForm('auth-options');
+            // Show the initial login form by default
+            switchAuthForm('login-form');
         }
 
         function hideAuthModal() {
@@ -397,204 +439,329 @@
                 } else {
                     await signInAnonymously(auth);
                 }
-
-                // Initialize RecaptchaVerifier for phone login
-                appVerifierLogin = new RecaptchaVerifier(auth, 'recaptcha-container-login', {
-                    'size': 'invisible'
-                });
-
-                // Initialize RecaptchaVerifier for phone registration
-                appVerifierRegister = new RecaptchaVerifier(auth, 'recaptcha-container-register', {
-                    'size': 'invisible'
-                });
                 
                 // Auth state listener
                 onAuthStateChanged(auth, user => {
-                    if (user) {
-                        isAuthReady = true;
-                        // Use display name if available, otherwise use a generic label
+                    const profileBtn = document.getElementById('profile-btn');
+                    if (user && !user.isAnonymous) {
+                        // User is signed in. Update UI and set up listeners.
                         const userName = user.displayName || `User ${user.uid.substring(0, 8)}`;
                         document.getElementById('user-name').textContent = userName;
                         
-                        // Start listening for comments after authentication is ready
+                        // Update the profile button to show user name and logout
+                        profileBtn.textContent = 'Logout';
+                        profileBtn.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
+                        profileBtn.classList.add('bg-red-600', 'hover:bg-red-700');
+                        
+                        // Stop any existing listeners before starting new ones
+                        if (unsubscribeFromComments) { unsubscribeFromComments(); }
+                        if (unsubscribeFromLikes) { unsubscribeFromLikes(); }
+                        
+                        // Set up new listeners for comments and likes
                         setupCommentsListener();
+                        setupProfileLikesListener();
                     } else {
-                        isAuthReady = true;
+                        // User is signed out. Update UI and clean up the listeners.
                         document.getElementById('user-name').textContent = 'Not logged in';
+                        document.getElementById('comments-list').innerHTML = ''; // Clear comments list
+                        document.getElementById('profile-likes-count').textContent = '0';
+                        document.getElementById('heart-btn').classList.remove('liked');
+
+                        // Reset the profile button text and style
+                        profileBtn.textContent = 'Profile';
+                        profileBtn.classList.remove('bg-red-600', 'hover:bg-red-700');
+                        profileBtn.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
+
+                        if (unsubscribeFromComments) { unsubscribeFromComments(); unsubscribeFromComments = null; }
+                        if (unsubscribeFromLikes) { unsubscribeFromLikes(); unsubscribeFromLikes = null; }
                     }
                 });
+
+                // Handle the sign-in redirect from an email link
+                if (isSignInWithEmailLink(auth, window.location.href)) {
+                    let email = window.localStorage.getItem('emailForSignIn');
+                    if (!email) {
+                        email = prompt('Please provide your email for confirmation');
+                    }
+                    if (email) {
+                        await signInWithEmailLink(auth, email, window.location.href);
+                        window.localStorage.removeItem('emailForSignIn');
+                        showModal('Success', 'You have been successfully signed in with your email link!');
+                    } else {
+                        showModal('Error', 'Please provide an email to complete sign-in.');
+                    }
+                }
 
             } catch (error) {
                 console.error("Error initializing Firebase:", error);
                 showModal("Error", "Failed to initialize the comment system.");
             }
         }
-
-        // Google Login Button Handler
-        const googleLoginBtn = document.getElementById('google-login-btn');
-        googleLoginBtn.addEventListener('click', async () => {
-            const provider = new GoogleAuthProvider();
-            try {
-                await signInWithPopup(auth, provider);
-                hideAuthModal();
-                // onAuthStateChanged will handle the rest
-            } catch (error) {
-                console.error("Google sign-in error:", error);
-                showModal("Sign-in Failed", "Could not sign in with Google. Please try again.");
-            }
-        });
-
-        // Show Phone Login form
-        document.getElementById('show-phone-login-btn').addEventListener('click', () => {
-            switchAuthForm('phone-login-form');
-        });
-
-        // Show Registration Options
-        document.getElementById('show-register-options-btn').addEventListener('click', () => {
-            switchAuthForm('register-options');
-        });
-
-        // Show Email Registration form
-        document.getElementById('show-email-register-btn').addEventListener('click', () => {
-            switchAuthForm('register-form');
-        });
-
-        // Show Phone Registration form
-        document.getElementById('show-phone-register-btn').addEventListener('click', () => {
-            isPhoneRegisterFlow = true;
-            switchAuthForm('phone-register-form');
-        });
-
-        // Back buttons
-        document.getElementById('back-to-auth-options-btn-1').addEventListener('click', () => {
-            switchAuthForm('auth-options');
-        });
-        document.getElementById('back-to-auth-options-btn-2').addEventListener('click', () => {
-            switchAuthForm('auth-options');
-        });
-        document.getElementById('back-to-register-options-btn-1').addEventListener('click', () => {
-            switchAuthForm('register-options');
-        });
-        document.getElementById('back-to-register-options-btn-2').addEventListener('click', () => {
-            isPhoneRegisterFlow = false;
-            switchAuthForm('register-options');
-        });
         
-        // Email Registration Form Submission Handler
-        const registerForm = document.getElementById('register-form');
-        registerForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const name = document.getElementById('register-name').value;
-            const email = document.getElementById('register-email').value;
-            const password = document.getElementById('register-password').value;
-
-            if (name.length < 1 || password.length < 6) {
-                showModal("Invalid Input", "Please enter a name and a password of at least 6 characters.");
-                return;
-            }
-
-            try {
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                await updateProfile(userCredential.user, { displayName: name });
-                hideAuthModal();
-                showModal("Success!", `Welcome, ${name}! You are now registered.`);
-            } catch (error) {
-                console.error("Registration error:", error);
-                showModal("Registration Failed", error.message);
-            }
-        });
-
-        // Send OTP Button Handler for Phone Login
-        const phoneLoginForm = document.getElementById('phone-login-form');
-        phoneLoginForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const phoneNumber = document.getElementById('phone-login-input').value;
-            isPhoneRegisterFlow = false;
-            
-            if (!phoneNumber || phoneNumber.length < 10) {
-                 showModal("Invalid Phone Number", "Please enter a valid phone number with country code.");
-                 return;
-            }
-
-            try {
-                confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, appVerifierLogin);
-                switchAuthForm('otp-form');
-            } catch (error) {
-                console.error("Error sending OTP:", error);
-                showModal("Error", "Failed to send OTP. Please check your phone number and try again.");
-                appVerifierLogin.render().then(function(widgetId) {
-                    grecaptcha.reset(widgetId);
+        // Profile Button Logic
+        document.getElementById('profile-btn').addEventListener('click', () => {
+            if (auth.currentUser && !auth.currentUser.isAnonymous) {
+                // If user is logged in, show a confirmation modal for logout
+                showModal('Logout', 'Are you sure you want to log out?');
+                document.getElementById('modal-close').textContent = 'Cancel';
+                const logoutConfirmBtn = document.createElement('button');
+                logoutConfirmBtn.textContent = 'Logout';
+                logoutConfirmBtn.classList.add('bg-red-600', 'text-white', 'py-2', 'px-4', 'rounded-full', 'hover:bg-red-700', 'ml-2');
+                logoutConfirmBtn.addEventListener('click', async () => {
+                    try {
+                        await signOut(auth);
+                        document.getElementById('modal').style.display = 'none';
+                        document.getElementById('modal-close').textContent = 'OK'; // Reset button text
+                    } catch (error) {
+                        showModal('Logout Failed', 'Could not log you out. Please try again.');
+                    } finally {
+                        logoutConfirmBtn.remove();
+                    }
                 });
-            }
-        });
-
-        // Send OTP Button Handler for Phone Registration
-        const phoneRegisterForm = document.getElementById('phone-register-form');
-        phoneRegisterForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const phoneNumber = document.getElementById('phone-register-input').value;
-            const name = document.getElementById('phone-register-name').value;
-            
-            if (!phoneNumber || phoneNumber.length < 10 || !name) {
-                 showModal("Invalid Input", "Please enter a valid phone number with country code and a name.");
-                 return;
-            }
-            isPhoneRegisterFlow = true;
-
-            try {
-                confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, appVerifierRegister);
-                switchAuthForm('otp-form');
-            } catch (error) {
-                console.error("Error sending OTP:", error);
-                showModal("Error", "Failed to send OTP. Please check your phone number and try again.");
-                appVerifierRegister.render().then(function(widgetId) {
-                    grecaptcha.reset(widgetId);
-                });
+                document.getElementById('modal').querySelector('.text-right').appendChild(logoutConfirmBtn);
+            } else {
+                // If user is not logged in, show the auth modal
+                showAuthModal();
             }
         });
         
-        // Verify OTP Button Handler
-        const otpForm = document.getElementById('otp-form');
-        otpForm.addEventListener('submit', async (e) => {
+        // --- Event Listeners for switching forms ---
+        document.getElementById('show-registration-options').addEventListener('click', () => {
+            switchAuthForm('options-view');
+        });
+        document.getElementById('show-forgot-password-form').addEventListener('click', () => {
+            switchAuthForm('forgot-password-form');
+        });
+        document.getElementById('show-email-form').addEventListener('click', () => {
+            switchAuthForm('email-form');
+        });
+        document.getElementById('show-phone-form').addEventListener('click', async () => {
+            switchAuthForm('phone-form');
+            // Initialize reCAPTCHA for phone registration if it doesn't exist
+            if (!appVerifierRegister) {
+                 appVerifierRegister = new RecaptchaVerifier(auth, 'recaptcha-container-register', { 'size': 'invisible' });
+                 await appVerifierRegister.render();
+            }
+        });
+        document.getElementById('back-to-login-btn-1').addEventListener('click', () => {
+            switchAuthForm('login-form');
+        });
+        document.getElementById('back-to-login-btn-2').addEventListener('click', () => {
+            switchAuthForm('login-form');
+        });
+        document.getElementById('back-to-options-btn-1').addEventListener('click', () => {
+            switchAuthForm('options-view');
+        });
+        document.getElementById('back-to-options-btn-2').addEventListener('click', () => {
+            switchAuthForm('options-view');
+        });
+        document.getElementById('back-from-otp-btn').addEventListener('click', () => {
+            // Check if user came from phone login or phone registration
+            const isLogin = sessionStorage.getItem('isLogin') === 'true';
+            if (isLogin) {
+                switchAuthForm('login-form');
+            } else {
+                switchAuthForm('phone-form');
+            }
+        });
+        
+        // --- Login Logic ---
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const identifier = document.getElementById('login-email-phone').value;
+            const password = document.getElementById('login-password').value;
+        
+            // Check if the identifier is a phone number or an email
+            const isPhoneNumber = /^\+\d{10,15}$/.test(identifier.trim());
+        
+            try {
+                if (isPhoneNumber) {
+                    // Sign in with phone number (sends OTP)
+                    if (!appVerifierLogin) {
+                        appVerifierLogin = new RecaptchaVerifier(auth, 'recaptcha-container-login', { 'size': 'invisible' });
+                        await appVerifierLogin.render();
+                    }
+                    confirmationResult = await signInWithPhoneNumber(auth, identifier, appVerifierLogin);
+                    sessionStorage.setItem('isLogin', 'true');
+                    showModal('OTP Sent', `A verification code has been sent to ${identifier}.`);
+                    switchAuthForm('otp-form');
+                    appVerifierLogin.render().then(function(widgetId) {
+                         grecaptcha.reset(widgetId);
+                     });
+                } else {
+                    // Sign in with email and password
+                    const userCredential = await signInWithEmailAndPassword(auth, identifier, password);
+                    console.log("Login successful:", userCredential.user);
+                    showModal('Success', `Welcome back, ${userCredential.user.displayName || userCredential.user.email}!`);
+                    hideAuthModal();
+                }
+            } catch (error) {
+                console.error("Login error:", error);
+                showModal('Login Failed', `Error: ${error.message}`);
+                if (appVerifierLogin) {
+                     appVerifierLogin.render().then(function(widgetId) {
+                         grecaptcha.reset(widgetId);
+                     });
+                 }
+            }
+        });
+
+        // --- Email Registration Logic (now using Email Link Auth) ---
+        document.getElementById('email-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('email-name').value;
+            const email = document.getElementById('email-input').value;
+
+            const actionCodeSettings = {
+                url: window.location.href,
+                handleCodeInApp: true,
+            };
+
+            try {
+                window.localStorage.setItem('emailForSignIn', email);
+                await sendSignInLinkToEmail(auth, email, actionCodeSettings);
+
+                console.log("Email link sent successfully to", email);
+                showModal('Check Your Email', `A verification link has been sent to ${email}. Please check your inbox and click the link to continue registration.`);
+                switchAuthForm('login-form');
+            } catch (error) {
+                console.error("Email link sending error:", error);
+                showModal('Registration Failed', `Error sending email link: ${error.message}`);
+            }
+        });
+
+        // --- Phone Registration & OTP Logic ---
+        document.getElementById('phone-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('phone-name').value;
+            const phone = document.getElementById('phone-input').value;
+            const password = document.getElementById('phone-password').value;
+
+            try {
+                 if (!appVerifierRegister) {
+                     appVerifierRegister = new RecaptchaVerifier(auth, 'recaptcha-container-register', { 'size': 'invisible' });
+                     await appVerifierRegister.render();
+                 }
+                confirmationResult = await signInWithPhoneNumber(auth, phone, appVerifierRegister);
+                
+                sessionStorage.setItem('tempName', name);
+                sessionStorage.setItem('tempPassword', password);
+                sessionStorage.setItem('isLogin', 'false');
+
+                console.log("OTP sent successfully to", phone);
+                showModal('OTP Sent', `A verification code has been sent to ${phone}.`);
+                switchAuthForm('otp-form');
+                 appVerifierRegister.render().then(function(widgetId) {
+                     grecaptcha.reset(widgetId);
+                 });
+            } catch (error) {
+                console.error("Phone registration error:", error);
+                showModal('Registration Failed', `Error sending OTP: ${error.message}`);
+                 appVerifierRegister.render().then(function(widgetId) {
+                     grecaptcha.reset(widgetId);
+                 });
+            }
+        });
+
+        // --- Forgot Password Logic ---
+        document.getElementById('forgot-password-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('forgot-password-email').value;
+
+            try {
+                await sendPasswordResetEmail(auth, email);
+                console.log("Password reset email sent to", email);
+                showModal('Password Reset Email Sent', `A password reset email has been sent to ${email}. Please check your inbox.`);
+                switchAuthForm('login-form');
+            } catch (error) {
+                console.error("Password reset error:", error);
+                showModal('Reset Failed', `Error: ${error.message}`);
+            }
+        });
+
+        // --- OTP Verification Logic ---
+        document.getElementById('otp-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const otpCode = document.getElementById('otp-input').value;
-            
-            if (otpCode.length !== 6) {
-                showModal("Invalid OTP", "Please enter the 6-digit code.");
-                return;
-            }
 
             try {
                 const userCredential = await confirmationResult.confirm(otpCode);
-                // If it's a registration flow, update the user's name
-                if (isPhoneRegisterFlow) {
-                    const name = document.getElementById('phone-register-name').value;
+                const isLogin = sessionStorage.getItem('isLogin') === 'true';
+
+                if (isLogin) {
+                    console.log("Phone login successful:", userCredential.user);
+                    showModal('Success', `Welcome back, ${userCredential.user.phoneNumber}!`);
+                } else {
+                    const name = sessionStorage.getItem('tempName');
+                    const password = sessionStorage.getItem('tempPassword');
+
                     await updateProfile(userCredential.user, { displayName: name });
+                    
+                    const userId = userCredential.user.uid;
+                    const userRef = doc(db, `/artifacts/${appId}/users/${userId}/userData/profile`);
+                    await setDoc(userRef, {
+                        name: name,
+                        email: null, // Phone registration does not include email
+                        phone: userCredential.user.phoneNumber,
+                        createdAt: serverTimestamp(),
+                    });
+                    
+                    console.log("Phone registration successful:", userCredential.user);
+                    showModal('Success', `Account for "${name}" created successfully!`);
                 }
+
                 hideAuthModal();
-                // onAuthStateChanged will handle the rest
+                document.getElementById('phone-form').reset();
+                document.getElementById('otp-form').reset();
+                sessionStorage.removeItem('tempName');
+                sessionStorage.removeItem('tempPassword');
+                sessionStorage.removeItem('isLogin');
+
             } catch (error) {
-                console.error("Error verifying OTP:", error);
-                showModal("Verification Failed", "The code was incorrect or expired. Please try again.");
+                console.error("OTP verification error:", error);
+                showModal('Verification Failed', `Error: ${error.message}`);
             }
         });
 
-        // Heart button functionality
+        // Profile heart button functionality
         const heartBtn = document.getElementById('heart-btn');
         const profilePic = document.getElementById('profile-pic');
+        const profileLikesCount = document.getElementById('profile-likes-count');
 
         heartBtn.addEventListener('click', () => {
-            if (!auth.currentUser) {
+            if (!auth.currentUser || auth.currentUser.isAnonymous) {
                 showAuthModal();
                 return;
             }
             
-            const isLiked = heartBtn.classList.toggle('liked');
-            
-            // Create a flying heart only when liking
-            if (isLiked) {
-                createFlyingHeart();
-            }
+            const userId = auth.currentUser.uid;
+            const profileLikesRef = doc(db, `/artifacts/${appId}/public/data/profileLikes/profile`);
+
+            runTransaction(db, async (transaction) => {
+                const docSnap = await transaction.get(profileLikesRef);
+                const data = docSnap.data() || { likedBy: [] };
+                
+                const likedBy = data.likedBy || [];
+                const isLiked = likedBy.includes(userId);
+
+                if (isLiked) {
+                    // User has liked, so unlike it
+                    transaction.update(profileLikesRef, {
+                        likedBy: arrayRemove(userId)
+                    });
+                } else {
+                    // User has not liked, so like it
+                    createFlyingHeart();
+                    transaction.set(profileLikesRef, {
+                        likedBy: arrayUnion(userId)
+                    }, { merge: true });
+                }
+            }).then(() => {
+                console.log("Profile like transaction successful.");
+            }).catch(error => {
+                console.error("Profile like transaction failed: ", error);
+                showModal("Error", "Failed to update like count. Please try again.");
+            });
         });
 
         // Function to create and animate a flying heart
@@ -622,6 +789,17 @@
         // Share button functionality
         const shareBtn = document.getElementById('share-btn');
         shareBtn.addEventListener('click', async () => {
+            // Track the share action
+            if (auth.currentUser) {
+                 await addDoc(collection(db, `/artifacts/${appId}/public/data/shares`), {
+                     userId: auth.currentUser.uid,
+                     userName: auth.currentUser.displayName,
+                     timestamp: serverTimestamp()
+                 });
+             } else {
+                 showAuthModal();
+             }
+             
             if (navigator.share) {
                 try {
                     await navigator.share({
@@ -644,16 +822,59 @@
         const commentsContainer = document.getElementById('comments-container');
 
         messageBtn.addEventListener('click', () => {
-            if (!auth.currentUser) {
+            if (!auth.currentUser || auth.currentUser.isAnonymous) {
                 showAuthModal();
                 return;
             }
             commentsContainer.classList.toggle('show');
         });
+        
+        // Function to handle comment likes
+        function handleCommentLike(commentId, button) {
+            if (!auth.currentUser || auth.currentUser.isAnonymous) {
+                showAuthModal();
+                return;
+            }
+
+            const userId = auth.currentUser.uid;
+            const commentRef = doc(db, `/artifacts/${appId}/public/data/comments`, commentId);
+
+            runTransaction(db, async (transaction) => {
+                const docSnap = await transaction.get(commentRef);
+                const data = docSnap.data() || { likedBy: [] };
+                
+                const likedBy = data.likedBy || [];
+                const isLiked = likedBy.includes(userId);
+
+                if (isLiked) {
+                    // User has liked, so unlike it
+                    transaction.update(commentRef, {
+                        likedBy: arrayRemove(userId)
+                    });
+                } else {
+                    // User has not liked, so like it
+                    transaction.update(commentRef, {
+                        likedBy: arrayUnion(userId)
+                    });
+                }
+            }).then(() => {
+                console.log(`Comment ${commentId} like transaction successful.`);
+            }).catch(error => {
+                console.error(`Comment ${commentId} like transaction failed: `, error);
+                showModal("Error", "Failed to update comment like count. Please try again.");
+            });
+        }
 
         // Firestore comments functionality
         function setupCommentsListener() {
-            if (!isAuthReady || !db) {
+            // Unsubscribe from any previous listener if it exists
+            if (unsubscribeFromComments) {
+                unsubscribeFromComments();
+                unsubscribeFromComments = null;
+            }
+            
+            // Check if user is authenticated before setting up the listener
+            if (!auth.currentUser || auth.currentUser.isAnonymous) {
                 return;
             }
 
@@ -661,11 +882,12 @@
             const commentsPath = `/artifacts/${appId}/public/data/comments`;
             const q = query(collection(db, commentsPath));
 
-            onSnapshot(q, (querySnapshot) => {
+            unsubscribeFromComments = onSnapshot(q, (querySnapshot) => {
                 const commentsList = document.getElementById('comments-list');
                 commentsList.innerHTML = '';
                 querySnapshot.forEach((doc) => {
                     const commentData = doc.data();
+                    const commentId = doc.id;
                     const commentElement = document.createElement('div');
                     commentElement.classList.add('bg-gray-100', 'p-3', 'rounded-lg', 'shadow-sm');
                     
@@ -673,15 +895,79 @@
                     
                     const userName = commentData.userName || `User ${commentData.userId.substring(0, 8)}`;
                     
+                    // Check if the current user has liked this comment
+                    const userId = auth.currentUser.uid;
+                    const likedBy = commentData.likedBy || [];
+                    const isLiked = likedBy.includes(userId);
+                    const likeCount = likedBy.length;
+                    
                     commentElement.innerHTML = `
                         <p class="text-xs text-gray-500 mb-1">By: ${userName} - ${timeString}</p>
                         <p class="text-sm text-gray-800">${commentData.text}</p>
+                        <div class="flex items-center mt-2 space-x-2">
+                           <button class="heart-btn-comment flex items-center p-1 rounded-full hover:bg-gray-200 transition-colors duration-300 ${isLiked ? 'liked' : ''}" data-comment-id="${commentId}">
+                               <svg class="h-5 w-5 text-gray-800 stroke-current outline-heart" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+                                   <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                               </svg>
+                               <svg class="h-5 w-5 text-pink-500 fill-current filled-heart absolute" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor" stroke-width="0" xmlns="http://www.w3.org/2000/svg">
+                                   <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                               </svg>
+                           </button>
+                           <span class="text-sm font-medium text-gray-600">${likeCount}</span>
+                        </div>
                     `;
                     commentsList.appendChild(commentElement);
+                    
+                    // Add event listener to the newly created heart button
+                    const newHeartButton = commentElement.querySelector('.heart-btn-comment');
+                    newHeartButton.addEventListener('click', () => {
+                        handleCommentLike(commentId, newHeartButton);
+                    });
                 });
             }, (error) => {
                 console.error("Error fetching comments:", error);
                 showModal("Error", "Could not load comments.");
+            });
+        }
+        
+        // Firestore profile likes functionality
+        function setupProfileLikesListener() {
+            // Unsubscribe from any previous listener
+            if (unsubscribeFromLikes) {
+                unsubscribeFromLikes();
+                unsubscribeFromLikes = null;
+            }
+
+            // Check if user is authenticated before setting up the listener
+            if (!auth.currentUser || auth.currentUser.isAnonymous) {
+                return;
+            }
+            
+            const profileLikesRef = doc(db, `/artifacts/${appId}/public/data/profileLikes/profile`);
+
+            unsubscribeFromLikes = onSnapshot(profileLikesRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    const likedBy = data.likedBy || [];
+                    const likeCount = likedBy.length;
+                    
+                    profileLikesCount.textContent = likeCount;
+
+                    // Update the heart button's state based on the current user
+                    const userId = auth.currentUser.uid;
+                    if (likedBy.includes(userId)) {
+                        heartBtn.classList.add('liked');
+                    } else {
+                        heartBtn.classList.remove('liked');
+                    }
+                } else {
+                    // Document doesn't exist, reset UI
+                    profileLikesCount.textContent = 0;
+                    heartBtn.classList.remove('liked');
+                }
+            }, (error) => {
+                console.error("Error fetching profile likes:", error);
+                showModal("Error", "Could not load profile likes.");
             });
         }
         
@@ -692,7 +978,7 @@
             const commentInput = document.getElementById('comment-input');
             const commentText = commentInput.value.trim();
 
-            if (!auth.currentUser) {
+            if (!auth.currentUser || auth.currentUser.isAnonymous) {
                 showAuthModal();
                 return;
             }
@@ -708,7 +994,8 @@
                     userId: auth.currentUser.uid,
                     userName: auth.currentUser.displayName,
                     text: commentText,
-                    timestamp: serverTimestamp()
+                    timestamp: serverTimestamp(),
+                    likedBy: [] // Initialize likes as an empty array
                 });
                 commentInput.value = ''; // Clear the input field
             } catch (error) {
@@ -716,7 +1003,47 @@
                 showModal("Error", "Failed to post comment.");
             }
         });
-    </script>
 
+        // Contact form submission logic
+        const contactForm = document.getElementById('contact-form');
+        const contactSuccessMessage = document.getElementById('contact-success-message');
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault(); // Prevent the default form submission (page reload)
+
+            const name = document.getElementById('contact-name').value.trim();
+            const email = document.getElementById('contact-email').value.trim();
+            const message = document.getElementById('contact-message').value.trim();
+
+            if (!name || !email || !message) {
+                showModal('Validation Error', 'Please fill out all fields before sending your message.');
+                return;
+            }
+
+            // Check if user is authenticated (even anonymously)
+            if (!auth.currentUser) {
+                 showModal("Authentication Required", "Please refresh the page to enable anonymous sign-in before sending a message.");
+                 return;
+            }
+            
+            try {
+                // Add the contact message to a new 'contactMessages' collection
+                const contactPath = `/artifacts/${appId}/public/data/contactMessages`;
+                await addDoc(collection(db, contactPath), {
+                    name,
+                    email,
+                    message,
+                    timestamp: serverTimestamp() // Add a server-side timestamp
+                });
+
+                // Hide the form and show the success message
+                contactForm.classList.add('hidden');
+                contactSuccessMessage.classList.remove('hidden');
+
+            } catch (error) {
+                console.error('Error adding contact message:', error);
+                showModal('Error', 'Failed to send your message. Please try again.');
+            }
+        });
+    </script>
 </body>
 </html>
