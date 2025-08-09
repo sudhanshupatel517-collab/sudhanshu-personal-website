@@ -394,37 +394,20 @@
     
     <!-- Firebase SDKs -->
     <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics.js";
-  import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, signOut, isSignInWithEmailLink, sendSignInLinkToEmail, updateProfile, signInWithEmailAndPassword, sendPasswordResetEmail, signInWithPhoneNumber, RecaptchaVerifier } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, addDoc, onSnapshot, collection, query, serverTimestamp, runTransaction, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyBoGH8LF04U5iyKQiLRt0foVfNsa8Myos",
-    authDomain: "see-sudhanhu.firebaseapp.com",
-    projectId: "see-sudhanhu",
-    storageBucket: "see-sudhanhu.firebasestorage.app",
-    messagingSenderId: "411257749031",
-    appId: "411257749031:web:7ef6fe3eae446343e5802",
-    measurementId: "G-37BYBZPLZM"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-
-  // ✅ Sign in anonymously
-  const auth = getAuth(app);
-  signInAnonymously(auth)
-    .then(() => {
-      console.log("Signed in anonymously");
-    })
-    .catch((error) => {
-      console.error("Firebase Auth Error:", error);
-    });
-</script>
-
-  
-            
-       
+        // Firebase configuration from the Canvas environment
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID",
+        };
+        
         // ====================================================================
 
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
@@ -989,8 +972,8 @@
                     // Check if the current user has liked this comment
                     const userId = auth.currentUser.uid;
                     const likedBy = commentData.likedBy || [];
-                    const isLiked = likedBy.includes(userId);
                     const likeCount = likedBy.length;
+                    const isLiked = likedBy.includes(userId);
                     
                     commentElement.innerHTML = `
                         <p class="text-xs text-gray-500 mb-1">By: ${userName} - ${timeString}</p>
