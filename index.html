@@ -115,6 +115,13 @@
         .auth-form-content.active {
             display: block;
         }
+        <section class="comments-container p-4 bg-white rounded shadow mt-8">
+  <h2 class="text-xl font-semibold mb-2">Leave a Comment</h2>
+  <textarea id="comment-input" rows="4" class="w-full p-2 border rounded mb-2" placeholder="Write your comment..."></textarea>
+  <button id="submit-comment" class="bg-pink-500 text-white px-4 py-2 rounded">Post Comment</button>
+  <div id="comments" class="mt-4 space-y-2"></div>
+</section>
+
     </style>
 </head>
 <body class="text-gray-800">
@@ -393,33 +400,70 @@
     </div>
     
     <!-- Firebase SDKs -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, signOut, isSignInWithEmailLink, sendSignInLinkToEmail, updateProfile, signInWithEmailAndPassword, sendPasswordResetEmail, signInWithPhoneNumber, RecaptchaVerifier } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDoc, addDoc, onSnapshot, collection, query, serverTimestamp, runTransaction, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+  <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, serverTimestamp, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+  import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
-        // Firebase configuration from the Canvas environment
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_AUTH_DOMAIN",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID",
-        };
-        
-        // ====================================================================
+  const firebaseConfig = {
+    apiKey: "AIzaSyBGBhlFQ4UsiKyqL8rtfOvVFnsn8qMyos",
+    authDomain: "see-sudhanshu.firebaseapp.com",
+    projectId: "see-sudhanshu",
+    storageBucket: "see-sudhanshu.appspot.com",
+    messagingSenderId: "1411257749031",
+    appId: "1:411257749031:web:7ef6e3eae44634e5802",
+    measurementId: "G-37BYWPLZPM"
+  };
 
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
 
-        let db, auth;
-        let unsubscribeFromComments = null; // Variable to hold the unsubscribe function for the comments listener
-        let unsubscribeFromLikes = null;
-        let confirmationResult;
-        let appVerifierRegister;
-        let appVerifierLogin;
-        
+  let currentUser = null;
+
+  signInAnonymously(auth).catch(console.error);
+
+  onAuthStateChanged(auth, user => {
+    if (user) {
+      currentUser = user;
+      listenForComments();
+    }
+  });
+
+  document.getElementById('submit-comment').addEventListener('click', async () => {
+    const text = document.getElementById('comment-input').value.trim();
+    if (!text) return alert("Please write something!");
+
+    try {
+      await addDoc(collection(db, "comments"), {
+        text,
+        userId: currentUser.uid,
+        timestamp: serverTimestamp()
+      });
+      document.getElementById('comment-input').value = "";
+    } catch (error) {
+      console.error("Error posting comment:", error);
+    }
+  });
+
+  function listenForComments() {
+    const q = query(collection(db, "comments"), orderBy("timestamp", "desc"));
+    onSnapshot(q, snapshot => {
+      const commentsDiv = document.getElementById('comments');
+      commentsDiv.innerHTML = "";
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const date = data.timestamp?.toDate().toLocaleString() || "Just now";
+        const div = document.createElement('div');
+        div.className = "p-2 border rounded";
+        div.textContent = `${data.text} (User: ${data.userId}, Posted: ${date})`;
+        commentsDiv.appendChild(div);
+      });
+    });
+  }
+</script>
+
+
         // Custom modal functions
         function showModal(title, message) {
             const modal = document.getElementById('modal');
